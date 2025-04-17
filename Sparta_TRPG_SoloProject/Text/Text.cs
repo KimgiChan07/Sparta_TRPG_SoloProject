@@ -114,7 +114,7 @@ namespace Sparta_TRPG_SoloProject.MainText
                     disPlayText = disPlayText.PadRight(namePadding);
 
                     sb.AppendLine($"{item.itemCode}. {disPlayText} l {item.detail}");
-                }
+                }bchc
             }
             else
             {
