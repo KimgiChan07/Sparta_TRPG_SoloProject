@@ -7,26 +7,35 @@ using Sparta_TRPG_SoloProject.Enums;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+using Sparta_TRPG_SoloProject.Inventory;
+using Sparta_TRPG_SoloProject.Shop;
 
 namespace Sparta_TRPG_SoloProject
 {
     internal class GameManager
     {
         P_Info p_Info = new P_Info();
+
+        InventorySystem inventory = new InventorySystem(Item.itemData);
+
         _Text text = new _Text();
+        ShopSystem shop;
         _TextInput textInput = new _TextInput();
+
+
         Menu gameStats = new Menu();
         public void Init()
         {
             p_Info.Init();
             text.SetPlayerInfo(p_Info);
-        }
+            inventory.SetPlayerInfo(p_Info);
+            text.SetInventory(inventory);
 
+            shop = new ShopSystem(text);
+        }
         public void TRPG_Main()
         {
             Init();
-
             while (true)
             {
                 switch (gameStats)
@@ -40,7 +49,6 @@ namespace Sparta_TRPG_SoloProject
                             1 => Menu.PlayerInfo,
                             2 => Menu.Inventory,
                             3 => Menu.Shop,
-                            0 => Menu.Main,
                             _ => Menu.Error
                         };
                         break;
@@ -77,32 +85,61 @@ namespace Sparta_TRPG_SoloProject
                                 gameStats = Menu.Main;
                                 break;
                             }
+                            else if (p_input == 1)
+                            {
+                                gameStats = Menu.EquipItem;
+                                break;
+
+                            }
                             else
                             {
                                 Console.Clear();
                                 Console.Write("잘못된 입력입니다.");
                                 Thread.Sleep(1000);
-
                             }
                         }
                         break;
-                    case Menu.Shop:
+
+                    case Menu.EquipItem:
+                        StringBuilder sb = new StringBuilder();
                         Console.Clear();
-                        Console.WriteLine("아직 미구현_0을 입력해 나가라");
+
+                        text.EquippedItemTextPrint();
+                        sb.AppendLine();
+                        sb.AppendLine();
+                        sb.AppendLine();
+                        sb.AppendLine("[보유아이템 목록]");
+                        sb.AppendLine();
+                        sb.AppendLine("0. 나가기");
+                        text.HasItemText(sb);
+
+                        Console.WriteLine(sb.ToString());
+
+                        Console.WriteLine("\n장착할 아이템의 코드를 입력해주세요");
                         Console.Write(">>");
-                        int s_test = textInput.InputValue();
-                        if (s_test == 0)
+
+                        int eqipCoode = textInput.InputValue();
+                        if (eqipCoode == 0)
                         {
-                            gameStats = Menu.Main;
+                            gameStats = Menu.Inventory;
                             break;
+                        }
+                        else if (!inventory.HasItemCode(eqipCoode))
+                        {
+                            Console.WriteLine("보유하지 않은 아이템입니다.");
                         }
                         else
                         {
-                            Console.Clear();
-                            Console.Write("잘못된 입력입니다.");
-                            Thread.Sleep(1000);
+                            inventory.EquipItem(eqipCoode);
                         }
                         break;
+
+                    case Menu.Shop:
+                        Console.Clear();
+                        shop.OpenShop(p_Info, inventory);
+                        gameStats = Menu.Main;
+                        break;
+
                     case Menu.Error:
                         Console.Write("[잘못된 입력입니다. 1~3을 입력해주세요.]\n");
                         int errorInput = textInput.InputValue();
@@ -111,6 +148,7 @@ namespace Sparta_TRPG_SoloProject
                         {
                             1 => Menu.PlayerInfo,
                             2 => Menu.Inventory,
+                            3 => Menu.Shop,
                             0 => Menu.Main,
                             _ => Menu.Error
                         };

@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Sparta_TRPG_SoloProject.Enums
 {
-    public enum Menu
+    public enum ItemType
     {
-        Main,
-        PlayerInfo,
-        Inventory, 
-        EquipItem,
-        Shop,
-        Exit,
-        Error
-           
+        Weapon,
+        Armor,
+    }
+    
+    public enum ItemStatType
+    {
+        damage,
+        def,
     }
 }

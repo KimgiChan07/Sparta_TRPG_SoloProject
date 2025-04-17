@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sparta_TRPG_SoloProject.Enums
 {
-    public enum PlayerInfo
+    public enum PlayerStats
     {
         Lv,
         name,
@@ -15,4 +15,5 @@ namespace Sparta_TRPG_SoloProject.Enums
         def,
         gold
     }
+
 }
