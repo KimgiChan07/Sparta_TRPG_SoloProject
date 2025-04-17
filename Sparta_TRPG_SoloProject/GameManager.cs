@@ -8,16 +8,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sparta_TRPG_SoloProject.Inventory;
+using Sparta_TRPG_SoloProject.Shop;
 
 namespace Sparta_TRPG_SoloProject
 {
     internal class GameManager
     {
-        P_Info p_Info = new P_Info();
-        _Text text = new _Text();
-        _TextInput textInput = new _TextInput();
+        P_Info p_Info = new P_Info(); 
+
         InventorySystem inventory = new InventorySystem(Item.itemData);
 
+
+        _Text text = new _Text();
+        ShopSystem shop;
+        _TextInput textInput = new _TextInput();
+        
+        
         Menu gameStats = new Menu();
         public void Init()
         {
@@ -25,6 +31,8 @@ namespace Sparta_TRPG_SoloProject
             text.SetPlayerInfo(p_Info);
             inventory.SetPlayerInfo(p_Info);
             text.SetInventory(inventory);
+
+            shop = new ShopSystem(text);
         }
 
         public void TRPG_Main()
@@ -131,8 +139,8 @@ namespace Sparta_TRPG_SoloProject
 
                     case Menu.Shop:
                         Console.Clear();
-                        Console.WriteLine("아직 미구현_ 0을 입력해 나가라");
-                        Console.Write(">>");
+                        shop.OpenShop(p_Info,inventory);
+
                         int s_test = textInput.InputValue();
                         if (s_test == 0)
                         {

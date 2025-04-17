@@ -55,8 +55,6 @@ namespace Sparta_TRPG_SoloProject.Inventory
                 Console.WriteLine("알맞은 값을 입력해주세요.");
             }
 
-
-
             if(item.itemType==ItemType.Weapon)
             {
                 if (equippedWeapon != null && equippedWeapon.itemCode == item.itemCode)
@@ -90,19 +88,14 @@ namespace Sparta_TRPG_SoloProject.Inventory
 
         public void PrintEquippedItems()
         {
-            Console.WriteLine($"\n무기: {(equippedWeapon != null ? equippedWeapon.name : "없음")}");
-            Console.WriteLine($"방어구: {(equippedArmor != null ? equippedArmor.name : "없음")}");
+            Console.WriteLine($"\n방어구: {(equippedArmor != null ? equippedArmor.name : "없음")}");
+            Console.WriteLine($"무기: {(equippedWeapon != null ? equippedWeapon.name : "없음")}");
         }
-
-
-
 
         public void SetPlayerInfo(P_Info _Info)
         {
             p_Info = _Info;
         }
-
-
 
         private static readonly Dictionary<ItemStatType, PlayerStats> setStat = new()
         {
@@ -135,6 +128,13 @@ namespace Sparta_TRPG_SoloProject.Inventory
 
             return statDisPlay;
         }
-        
+        public void AddBuyItem(int itemCode)
+        {
+            if (hasItemCodes.Contains(itemCode)){
+
+                hasItemCodes.Add(itemCode);
+            }
+        }
+
     }
 }
