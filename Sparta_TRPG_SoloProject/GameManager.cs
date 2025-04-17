@@ -14,16 +14,15 @@ namespace Sparta_TRPG_SoloProject
 {
     internal class GameManager
     {
-        P_Info p_Info = new P_Info(); 
+        P_Info p_Info = new P_Info();
 
         InventorySystem inventory = new InventorySystem(Item.itemData);
-
 
         _Text text = new _Text();
         ShopSystem shop;
         _TextInput textInput = new _TextInput();
-        
-        
+
+
         Menu gameStats = new Menu();
         public void Init()
         {
@@ -34,11 +33,9 @@ namespace Sparta_TRPG_SoloProject
 
             shop = new ShopSystem(text);
         }
-
         public void TRPG_Main()
         {
             Init();
-
             while (true)
             {
                 switch (gameStats)
@@ -90,7 +87,7 @@ namespace Sparta_TRPG_SoloProject
                             }
                             else if (p_input == 1)
                             {
-                                gameStats = Menu.EquipItem; 
+                                gameStats = Menu.EquipItem;
                                 break;
 
                             }
@@ -115,23 +112,23 @@ namespace Sparta_TRPG_SoloProject
                         sb.AppendLine();
                         sb.AppendLine("0. 나가기");
                         text.HasItemText(sb);
-                        
+
                         Console.WriteLine(sb.ToString());
 
                         Console.WriteLine("\n장착할 아이템의 코드를 입력해주세요");
                         Console.Write(">>");
-                        
+
                         int eqipCoode = textInput.InputValue();
-                        if(eqipCoode == 0)
+                        if (eqipCoode == 0)
                         {
                             gameStats = Menu.Inventory;
                             break;
                         }
                         else if (!inventory.HasItemCode(eqipCoode))
                         {
-
+                            Console.WriteLine("보유하지 않은 아이템입니다.");
                         }
-                        else 
+                        else
                         {
                             inventory.EquipItem(eqipCoode);
                         }
@@ -139,20 +136,8 @@ namespace Sparta_TRPG_SoloProject
 
                     case Menu.Shop:
                         Console.Clear();
-                        shop.OpenShop(p_Info,inventory);
-
-                        int s_test = textInput.InputValue();
-                        if (s_test == 0)
-                        {
-                            gameStats = Menu.Main;
-                            break;
-                        }
-                        else
-                        {
-                            Console.Clear();
-                            Console.Write("잘못된 입력입니다.");
-                            Thread.Sleep(1000);
-                        }
+                        shop.OpenShop(p_Info, inventory);
+                        gameStats = Menu.Main;
                         break;
 
                     case Menu.Error:
@@ -166,7 +151,7 @@ namespace Sparta_TRPG_SoloProject
                             3 => Menu.Shop,
                             0 => Menu.Main,
                             _ => Menu.Error
-                        } ;
+                        };
                         break;
                 }
             }

@@ -14,7 +14,7 @@ namespace Sparta_TRPG_SoloProject.MainText
 {
     public class _Text
     {
-        private InventorySystem inventorySystem;
+        private InventorySystem inventory;
         private P_Info playerInfor = new P_Info();
         _TextInput textInput = new _TextInput();
 
@@ -24,7 +24,7 @@ namespace Sparta_TRPG_SoloProject.MainText
         }
         public void SetInventory(InventorySystem _inventory)
         {
-            inventorySystem = _inventory;
+            inventory = _inventory;
         }
 
         public void MainTextPrint()
@@ -34,23 +34,25 @@ namespace Sparta_TRPG_SoloProject.MainText
             sb.AppendLine();
             sb.Append("[이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.]");
             sb.AppendLine();
-            sb.Append("\n1. 내정보\n2. 인벤토리\n3. 상점");
+            sb.AppendLine("\n1. 내정보\n2. 인벤토리\n3. 상점");
             sb.AppendLine();
-            sb.Append("\n원하시는 행동을 입력해주세요.");
             sb.AppendLine();
+            sb.Append("원하시는 행동을 입력해주세요.");
+
             sb.Append("\n>>");
             Console.Write(sb.ToString());
         }
 
         public void PlayerInfoTextPrint()
         {
-            var statDisPlay = inventorySystem.EquippedStatDisPlay();
+            var statDisPlay = inventory.EquippedStatDisPlay();
 
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("캐릭터의 정보가 표시됩니다");
             sb.AppendLine();
             sb.AppendLine();
+            sb.AppendLine("-----------------------------");
 
             foreach (var stat in playerInfor.playerStats)
             {
@@ -74,11 +76,12 @@ namespace Sparta_TRPG_SoloProject.MainText
             }
             sb.AppendLine();
             sb.AppendLine();
+            sb.AppendLine("-----------------------------");
             sb.AppendLine("[장착아이템]");
             sb.AppendLine();
-            if (inventorySystem.equippedWeapon != null)
+            if (inventory.equippedWeapon != null)
             {
-                var weapon = inventorySystem.equippedWeapon;
+                var weapon = inventory.equippedWeapon;
                 string stats = string.Join(", ", weapon.stats.Select(s => $"+{s.statType} {s.value}"));
                 sb.AppendLine($"무기: {weapon.name} ({stats})");
             }
@@ -86,9 +89,9 @@ namespace Sparta_TRPG_SoloProject.MainText
             {
                 sb.AppendLine("무기: 미장착");
             }
-            if (inventorySystem.equippedArmor != null)
+            if (inventory.equippedArmor != null)
             {
-                var armor = inventorySystem.equippedArmor;
+                var armor = inventory.equippedArmor;
                 string stats = string.Join(", ", armor.stats.Select(s => $"+{s.statType} {s.value}"));
                 sb.AppendLine($"방어구: {armor.name} ({stats})");
             }
@@ -97,45 +100,58 @@ namespace Sparta_TRPG_SoloProject.MainText
                 sb.AppendLine("방어구: 미장착");
             }
 
-
-
+            sb.AppendLine("-----------------------------");
             sb.AppendLine("\n0. 나가기");
+            sb.AppendLine();
+            
+            sb.Append("원하시는 행동을 입력해주세요.");
             sb.Append("\n>>");
             Console.Write(sb.ToString());
         }
-
-
 
         public void InventoryTextPrint()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("<인벤토리>");
+            
             sb.AppendLine();
+            
             sb.Append("보유 중인 아이템을 관리할 수 있습니다.");
+            
             sb.AppendLine();
             sb.AppendLine();
+            
             sb.Append("[보유 아이템 목록]");
+            
             sb.AppendLine();
             sb.AppendLine();
+            sb.AppendLine("-----------------------------");
 
             HasItemText(sb);
-
+            
+            sb.AppendLine("-----------------------------");
             sb.AppendLine();
+            sb.AppendLine();
+            
             sb.Append("1. 장착관리\n0. 나가기");
             sb.AppendLine();
+            sb.AppendLine();
+            
+            sb.Append("-----------------------------");
             sb.Append("\n원하시는 행동을 입력해주세요.");
             sb.AppendLine();
             sb.Append("\n>>");
+            
             Console.Write(sb.ToString());
         }
 
         public void HasItemText(StringBuilder sb)
         {
-            if (inventorySystem != null)
+            if (inventory != null)
             {
-                foreach (var item in inventorySystem.GetOwnedItems())
+                foreach (var item in inventory.GetOwnedItems())
                 {
-                    bool isEquipped = (inventorySystem.equippedWeapon == item || inventorySystem.equippedArmor == item);
+                    bool isEquipped = (inventory.equippedWeapon == item || inventory.equippedArmor == item);
 
                     string name = item.name + (isEquipped ? " [장착]" : "");
                     name = SetTextSort(name, 30); // 이름 길이 정렬
@@ -150,12 +166,13 @@ namespace Sparta_TRPG_SoloProject.MainText
                 sb.AppendLine("인벤토리 데이터가 없습니다.");
             }
         }
+
         public void EquippedItemTextPrint()
         {
             Console.WriteLine("[장착중인 아이템]");
-            if (inventorySystem != null)
+            if (inventory != null)
             {
-                inventorySystem.PrintEquippedItems();
+                inventory.PrintEquippedItems();
             }
             else
             {
@@ -170,10 +187,11 @@ namespace Sparta_TRPG_SoloProject.MainText
             Console.Clear();
             sb.AppendLine("<상점 목록>");
             sb.AppendLine($"보유 골드: {currentGold} G\n");
+            sb.AppendLine("---------------------------------------------");
             sb.AppendLine("구매 가능 아이템:\n");
 
             const int namePadding = 30;
-            const int statPadding = 20;
+            const int statPadding = 15;
             const int pricePadding = 10;
 
             foreach (var pair in itemData)
@@ -182,16 +200,21 @@ namespace Sparta_TRPG_SoloProject.MainText
 
                 string name = SetTextSort(item.name, namePadding);
                 string stats = SetTextSort(string.Join(", ", item.stats.Select(s => $"+{s.statType} {s.value}")), statPadding);
-                string price = inventorySystem.HasItemCode(item.itemCode) ? SetTextSort("[보유중]", pricePadding) : SetTextSort($"가격: {item.sellGold}G", pricePadding);
+                string pricetext = inventory.HasItemCode(item.itemCode) ? $"[보유중]   l {item.detail}" : $"가격: {item.sellGold}G ㅣ {item.detail}";
 
-                sb.AppendLine($"{item.itemCode}. {name} | {stats} | 가격: {price}");
+                string price= SetTextSort(pricetext, pricePadding);
+
+                sb.AppendLine($"{item.itemCode}. {name}l {stats}l {price}");
             }
-
+            sb.AppendLine();
+            sb.AppendLine();
             sb.AppendLine("\n0. 나가기");
+            sb.AppendLine("---------------------------------------------");
+            sb.AppendLine("\n원하시는 행동을 입력해주세요.");
+            
             sb.Append(">> ");
             Console.Write(sb.ToString());
         }
-
 
         private int GetTextSortLength(string text)
         {

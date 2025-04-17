@@ -130,7 +130,7 @@ namespace Sparta_TRPG_SoloProject.Inventory
         }
         public void AddBuyItem(int itemCode)
         {
-            if (hasItemCodes.Contains(itemCode)){
+            if (!hasItemCodes.Contains(itemCode)){
 
                 hasItemCodes.Add(itemCode);
             }

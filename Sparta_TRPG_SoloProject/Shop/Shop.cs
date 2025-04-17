@@ -40,7 +40,6 @@ namespace Sparta_TRPG_SoloProject.Shop
                 }
                 BuyItem(input, p_Info, inventory);
                 Thread.Sleep(1000);
-
             }
         }
         public void BuyItem(int itemCode, P_Info p_Info, InventorySystem inventory)
@@ -50,6 +49,7 @@ namespace Sparta_TRPG_SoloProject.Shop
                 Console.WriteLine("존재하지 않습니다.");
                 return;
             }
+
             int currentGold = Convert.ToInt32(p_Info.playerStats[PlayerStats.gold]);
 
             if (currentGold < item.sellGold)
@@ -57,6 +57,7 @@ namespace Sparta_TRPG_SoloProject.Shop
                 Console.WriteLine("소지 금액이 부족합니다.");
                 return;
             }
+
             if (inventory.HasItemCode(itemCode))
             {
                 Console.WriteLine("이미 보유중입니다.");
@@ -68,9 +69,6 @@ namespace Sparta_TRPG_SoloProject.Shop
             inventory.AddBuyItem(item.itemCode);
 
             Console.WriteLine($"{item.name}을 구매하였습니다.");
-
-
         }
     }
-
 }
