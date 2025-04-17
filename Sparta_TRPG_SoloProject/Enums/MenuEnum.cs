@@ -15,6 +15,5 @@ namespace Sparta_TRPG_SoloProject.Enums
         Shop,
         Exit,
         Error
-           
     }
 }
