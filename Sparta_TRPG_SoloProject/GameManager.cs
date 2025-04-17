@@ -15,13 +15,10 @@ namespace Sparta_TRPG_SoloProject
     internal class GameManager
     {
         P_Info p_Info = new P_Info();
-
         InventorySystem inventory = new InventorySystem(Item.itemData);
-
         _Text text = new _Text();
-        ShopSystem shop;
         _TextInput textInput = new _TextInput();
-
+        ShopSystem shop;
 
         Menu gameStats = new Menu();
         public void Init()
@@ -30,9 +27,9 @@ namespace Sparta_TRPG_SoloProject
             text.SetPlayerInfo(p_Info);
             inventory.SetPlayerInfo(p_Info);
             text.SetInventory(inventory);
-
             shop = new ShopSystem(text);
         }
+
         public void TRPG_Main()
         {
             Init();
@@ -52,7 +49,6 @@ namespace Sparta_TRPG_SoloProject
                             _ => Menu.Error
                         };
                         break;
-
                     case Menu.PlayerInfo:
                         while (true)
                         {
@@ -73,7 +69,6 @@ namespace Sparta_TRPG_SoloProject
                             }
                         }
                         break;
-
                     case Menu.Inventory:
                         while (true)
                         {
@@ -89,7 +84,6 @@ namespace Sparta_TRPG_SoloProject
                             {
                                 gameStats = Menu.EquipItem;
                                 break;
-
                             }
                             else
                             {
@@ -99,7 +93,6 @@ namespace Sparta_TRPG_SoloProject
                             }
                         }
                         break;
-
                     case Menu.EquipItem:
                         StringBuilder sb = new StringBuilder();
                         Console.Clear();
@@ -133,13 +126,11 @@ namespace Sparta_TRPG_SoloProject
                             inventory.EquipItem(eqipCoode);
                         }
                         break;
-
                     case Menu.Shop:
                         Console.Clear();
                         shop.OpenShop(p_Info, inventory);
                         gameStats = Menu.Main;
                         break;
-
                     case Menu.Error:
                         Console.Write("[잘못된 입력입니다. 1~3을 입력해주세요.]\n");
                         int errorInput = textInput.InputValue();

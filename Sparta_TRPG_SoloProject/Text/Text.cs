@@ -16,7 +16,6 @@ namespace Sparta_TRPG_SoloProject.MainText
     {
         private InventorySystem inventory;
         private P_Info playerInfor = new P_Info();
-        _TextInput textInput = new _TextInput();
 
         public void SetPlayerInfo(P_Info info)
         {
@@ -38,7 +37,6 @@ namespace Sparta_TRPG_SoloProject.MainText
             sb.AppendLine();
             sb.AppendLine();
             sb.Append("원하시는 행동을 입력해주세요.");
-
             sb.Append("\n>>");
             Console.Write(sb.ToString());
         }
@@ -216,6 +214,13 @@ namespace Sparta_TRPG_SoloProject.MainText
             Console.Write(sb.ToString());
         }
 
+        public string SetTextSort(string text, int targetWidht)
+        {
+            int len = GetTextSortLength(text);
+            int ppading = Math.Max(0, targetWidht - len);
+            return text + new string(' ', ppading);
+        }
+
         private int GetTextSortLength(string text)
         {
             int len = 0;
@@ -226,11 +231,5 @@ namespace Sparta_TRPG_SoloProject.MainText
             return len;
         }
 
-        public string SetTextSort(string text, int targetWidht)
-        {
-            int len = GetTextSortLength(text);
-            int ppading = Math.Max(0, targetWidht - len);
-            return text + new string(' ', ppading);
-        }
     }
 }
