@@ -7,7 +7,7 @@ using Sparta_TRPG_SoloProject.Enums;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+using Sparta_TRPG_SoloProject.Inventory;
 
 namespace Sparta_TRPG_SoloProject
 {
@@ -16,11 +16,15 @@ namespace Sparta_TRPG_SoloProject
         P_Info p_Info = new P_Info();
         _Text text = new _Text();
         _TextInput textInput = new _TextInput();
+        InventorySystem inventory = new InventorySystem(Item.itemData);
+
         Menu gameStats = new Menu();
         public void Init()
         {
             p_Info.Init();
             text.SetPlayerInfo(p_Info);
+            inventory.SetPlayerInfo(p_Info);
+            text.SetInventory(inventory);
         }
 
         public void TRPG_Main()
@@ -40,7 +44,6 @@ namespace Sparta_TRPG_SoloProject
                             1 => Menu.PlayerInfo,
                             2 => Menu.Inventory,
                             3 => Menu.Shop,
-                            0 => Menu.Main,
                             _ => Menu.Error
                         };
                         break;
@@ -77,18 +80,58 @@ namespace Sparta_TRPG_SoloProject
                                 gameStats = Menu.Main;
                                 break;
                             }
+                            else if (p_input == 1)
+                            {
+                                gameStats = Menu.EquipItem; 
+                                break;
+
+                            }
                             else
                             {
                                 Console.Clear();
                                 Console.Write("잘못된 입력입니다.");
                                 Thread.Sleep(1000);
-
                             }
                         }
                         break;
+
+                    case Menu.EquipItem:
+                        StringBuilder sb = new StringBuilder();
+                        Console.Clear();
+
+                        text.EquippedItemTextPrint();
+                        sb.AppendLine();
+                        sb.AppendLine();
+                        sb.AppendLine();
+                        sb.AppendLine("[보유아이템 목록]");
+                        sb.AppendLine();
+                        sb.AppendLine("0. 나가기");
+                        text.HasItemText(sb);
+                        
+                        Console.WriteLine(sb.ToString());
+
+                        Console.WriteLine("\n장착할 아이템의 코드를 입력해주세요");
+                        Console.Write(">>");
+                        
+                        int eqipCoode = textInput.InputValue();
+                        if(eqipCoode == 0)
+                        {
+                            gameStats = Menu.Inventory;
+                            break;
+                        }
+                        else if (!inventory.HasItemCode(eqipCoode))
+                        {
+
+                        }
+                        else 
+                        {
+                            inventory.EquipItem(eqipCoode);
+                        }
+                        break;
+
                     case Menu.Shop:
                         Console.Clear();
-                        Console.WriteLine("아직 미구현_0을 입력해 나가라");
+                        Console.WriteLine("아직 미구현_ 0을 입력해 나가라");
                         Console.Write(">>");
                         int s_test = textInput.InputValue();
                         if (s_test == 0)
@@ -103,6 +146,7 @@ namespace Sparta_TRPG_SoloProject
                             Thread.Sleep(1000);
                         }
                         break;
+
                     case Menu.Error:
                         Console.Write("[잘못된 입력입니다. 1~3을 입력해주세요.]\n");
                         int errorInput = textInput.InputValue();
@@ -111,9 +155,10 @@ namespace Sparta_TRPG_SoloProject
                         {
                             1 => Menu.PlayerInfo,
                             2 => Menu.Inventory,
+                            3 => Menu.Shop,
                             0 => Menu.Main,
                             _ => Menu.Error
-                        };
+                        } ;
                         break;
                 }
             }

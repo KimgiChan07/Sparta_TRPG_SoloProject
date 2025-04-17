@@ -9,21 +9,20 @@ using Sparta_TRPG_SoloProject.TextInput;
 
 namespace Sparta_TRPG_SoloProject.PlayerInfor
 {
-    internal class P_Info
+    public  class P_Info
     {
-        public Dictionary<PlayerInfo, object>? playerStats;
+        public Dictionary<PlayerStats, object>? playerStats;
         public void Init()
         {
-            playerStats = new Dictionary<PlayerInfo, object>
+            playerStats = new Dictionary<PlayerStats, object>
             {
-                { PlayerInfo.Lv,1 },
-                { PlayerInfo.name,"SprtaMan" },
-                { PlayerInfo.hp,100 },
-                { PlayerInfo.damage,10 },
-                { PlayerInfo.def,5 },
-                { PlayerInfo.gold,1500 }
+                { PlayerStats.Lv,1 },
+                { PlayerStats.name,"SprtaMan" },
+                { PlayerStats.hp,100 },
+                { PlayerStats.damage,10 },
+                { PlayerStats.def,5 },
+                { PlayerStats.gold,1500 }
             };
         }
-
     }
 }
