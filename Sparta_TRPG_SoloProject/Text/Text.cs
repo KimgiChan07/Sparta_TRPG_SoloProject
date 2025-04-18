@@ -7,6 +7,7 @@ using Sparta_TRPG_SoloProject.TextInput;
 using System.Threading.Tasks;
 using Sparta_TRPG_SoloProject.Inventory;
 using Sparta_TRPG_SoloProject.Enums;
+using Sparta_TRPG_SoloProject.Dungeon;
 
 
 
@@ -15,7 +16,9 @@ namespace Sparta_TRPG_SoloProject.MainText
     public class _Text
     {
         private InventorySystem inventory;
+        private _TextInput textInput= new _TextInput();
         private P_Info playerInfor = new P_Info();
+        private Roosted roosted= new Roosted();
 
         public void SetPlayerInfo(P_Info info)
         {
@@ -33,7 +36,7 @@ namespace Sparta_TRPG_SoloProject.MainText
             sb.AppendLine();
             sb.Append("[이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.]");
             sb.AppendLine();
-            sb.AppendLine("\n1. 내정보\n2. 인벤토리\n3. 상점");
+            sb.AppendLine("\n1. 내정보\n2. 인벤토리\n3. 상점\n4. 휴식하기");
             sb.AppendLine();
             sb.AppendLine();
             sb.Append("원하시는 행동을 입력해주세요.");
@@ -54,12 +57,12 @@ namespace Sparta_TRPG_SoloProject.MainText
 
             foreach (var stat in playerInfor.playerStats)
             {
-                if (stat.Key == Enums.PlayerStats.gold)
+                if (stat.Key == PlayerStats.gold)
                 {
                     sb.AppendLine($"\n[{stat.Key}]: {stat.Value}G");
                     continue;
                 }
-                else if (stat.Key == Enums.PlayerStats.Lv)
+                else if (stat.Key == PlayerStats.Lv)
                 {
                     sb.AppendLine($"{stat.Key}. {stat.Value}");
                 }
@@ -101,7 +104,6 @@ namespace Sparta_TRPG_SoloProject.MainText
             sb.AppendLine("-----------------------------");
             sb.AppendLine("\n0. 나가기");
             sb.AppendLine();
-            
             sb.Append("원하시는 행동을 입력해주세요.");
             sb.Append("\n>>");
             Console.Write(sb.ToString());
@@ -125,7 +127,7 @@ namespace Sparta_TRPG_SoloProject.MainText
             sb.AppendLine();
             sb.AppendLine("-----------------------------");
 
-            HasItemText(sb);
+            HasItemTextPrint(sb);
             
             sb.AppendLine("-----------------------------");
             sb.AppendLine();
@@ -143,7 +145,7 @@ namespace Sparta_TRPG_SoloProject.MainText
             Console.Write(sb.ToString());
         }
 
-        public void HasItemText(StringBuilder sb)
+        public void HasItemTextPrint(StringBuilder sb)
         {
             if (inventory != null)
             {
@@ -151,12 +153,12 @@ namespace Sparta_TRPG_SoloProject.MainText
                 {
                     bool isEquipped = (inventory.equippedWeapon == item || inventory.equippedArmor == item);
 
-                    string name = item.name + (isEquipped ? " [장착]" : "");
-                    name = SetTextSort(name, 30); // 이름 길이 정렬
+                    string equippedText = item.name + (isEquipped ? " [장착]" : "");
+                    equippedText = SetTextSort(equippedText, 30); // 이름 길이 정렬
 
-                    string statInfo = SetTextSort(string.Join(", ", item.stats.Select(s => $"+{s.statType} {s.value}")), 20); // 스탯 정렬
+                    string statInfo = SetTextSort(string.Join(", ", item.stats.Select(s => $"+ {s.statType} {s.value}")), 20); // 스탯 정렬
 
-                    sb.AppendLine($"{item.itemCode}. {name} | {statInfo} | {item.detail}");
+                    sb.AppendLine($"{item.itemCode}. {equippedText} | {statInfo} | {item.detail}");
                 }
             }
             else
@@ -167,10 +169,17 @@ namespace Sparta_TRPG_SoloProject.MainText
 
         public void EquippedItemTextPrint()
         {
+            StringBuilder sb= new StringBuilder();
             Console.WriteLine("[장착중인 아이템]");
             if (inventory != null)
             {
                 inventory.PrintEquippedItems();
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.AppendLine("[보유아이템 목록]");
+                sb.AppendLine();
+                Console.WriteLine(sb.ToString());
             }
             else
             {
@@ -178,7 +187,7 @@ namespace Sparta_TRPG_SoloProject.MainText
             }
         }
 
-        public void PrintShopItemList(Dictionary<int, Item> itemData, P_Info playerInfo)
+        public void ShopItemListPrint(Dictionary<int, Item> itemData, P_Info playerInfo)
         {
             int currentGold = Convert.ToInt32(playerInfo.playerStats[PlayerStats.gold]);
             StringBuilder sb = new StringBuilder();
@@ -206,12 +215,21 @@ namespace Sparta_TRPG_SoloProject.MainText
             }
             sb.AppendLine();
             sb.AppendLine();
+            sb.AppendLine("구매하실 아이템 코드를 입력해주세요.");
             sb.AppendLine("\n0. 나가기");
             sb.AppendLine("---------------------------------------------");
             sb.AppendLine("\n원하시는 행동을 입력해주세요.");
-            
+
             sb.Append(">> ");
             Console.Write(sb.ToString());
+        }
+
+        public void HealingTextPrint()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("휴식중입니다....");
+            Console.WriteLine(sb.ToString());
+            roosted.Roost(playerInfor);
         }
 
         public string SetTextSort(string text, int targetWidht)
