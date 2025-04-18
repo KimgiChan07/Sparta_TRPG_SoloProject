@@ -26,17 +26,11 @@ namespace Sparta_TRPG_SoloProject.Shop
         {
             while (true)
             {
-                text.PrintShopItemList(itemData, p_Info);
+                text.ShopItemListPrint(itemData, p_Info);
                 int input = textInput.InputValue();
                 if (input == 0)
                 {
                     break;
-                }
-                if (!itemData.ContainsKey(input))
-                {
-                    Console.WriteLine("잘못된 번호입니다.");
-                    Thread.Sleep(1000);
-                    continue;
                 }
                 BuyItem(input, p_Info, inventory);
                 Thread.Sleep(1000);
@@ -46,7 +40,7 @@ namespace Sparta_TRPG_SoloProject.Shop
         {
             if (!itemData.TryGetValue(itemCode, out Item item))
             {
-                Console.WriteLine("존재하지 않습니다.");
+                Console.WriteLine("아이템이 존재하지 않습니다.");
                 return;
             }
 

@@ -99,8 +99,8 @@ namespace Sparta_TRPG_SoloProject.Inventory
 
         private static readonly Dictionary<ItemStatType, PlayerStats> setStat = new()
         {
-            { ItemStatType.damage,PlayerStats.damage},
-            { ItemStatType.def,PlayerStats.def},
+            { ItemStatType.damage, PlayerStats.damage},
+            { ItemStatType.def, PlayerStats.def},
 
         };
         public Dictionary<PlayerStats, int> EquippedStatDisPlay()
