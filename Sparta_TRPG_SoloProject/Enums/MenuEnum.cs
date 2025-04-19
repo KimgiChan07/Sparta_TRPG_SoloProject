@@ -14,6 +14,7 @@ namespace Sparta_TRPG_SoloProject.Enums
         EquipItem,
         Shop,
         Rest,
+        Dungeon,
         Exit,
         Error
     }

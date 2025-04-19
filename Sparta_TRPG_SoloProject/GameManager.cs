@@ -38,16 +38,21 @@ namespace Sparta_TRPG_SoloProject
             {
                 switch (gameStats)
                 {
+                    case Menu.Exit:
+                        Environment.Exit(0);
+                        break;
                     case Menu.Main:
                         Console.Clear();
                         text.MainTextPrint();
                         int input = textInput.InputValue();
                         gameStats = input switch
                         {
+                            0 => Menu.Exit,
                             1 => Menu.PlayerInfo,
                             2 => Menu.Inventory,
                             3 => Menu.Shop,
                             4 => Menu.Rest,
+                            5 => Menu.Dungeon,
                             _ => Menu.Error
                         };
                         break;
@@ -95,6 +100,7 @@ namespace Sparta_TRPG_SoloProject
                             }
                         }
                         break;
+
                     case Menu.EquipItem:
                         StringBuilder sb = new StringBuilder();
                         Console.Clear();
@@ -146,18 +152,27 @@ namespace Sparta_TRPG_SoloProject
                             gameStats = Menu.Main;
                         }
                         break;
-
+                    case Menu.Dungeon:
+                        Console.Clear();
+                        text.DungeonEntry();
+                        int d_Input = textInput.InputValue();
+                        if(d_Input == 0)
+                        {
+                            gameStats=Menu.Main;
+                        }
+                        break;
                     case Menu.Error:
-                        Console.Write("[잘못된 입력입니다. 1~3을 입력해주세요.]\n");
+                        Console.Write("[잘못된 입력입니다. 0~5을 입력해주세요.]\n");
                         int errorInput = textInput.InputValue();
 
                         gameStats = errorInput switch
                         {
+                            0 => Menu.Exit,
                             1 => Menu.PlayerInfo,
                             2 => Menu.Inventory,
                             3 => Menu.Shop,
                             4 => Menu.Rest,
-                            0 => Menu.Main,
+                            5 => Menu.Dungeon,
                             _ => Menu.Error
                         };
                         break;

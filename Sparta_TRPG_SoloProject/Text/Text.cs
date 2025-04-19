@@ -36,7 +36,7 @@ namespace Sparta_TRPG_SoloProject.MainText
             sb.AppendLine();
             sb.Append("[이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.]");
             sb.AppendLine();
-            sb.AppendLine("\n1. 내정보\n2. 인벤토리\n3. 상점\n4. 휴식하기");
+            sb.AppendLine("\n0. 게임종료\n1. 내정보\n2. 인벤토리\n3. 상점\n4. 휴식하기\n5. 던전입장");
             sb.AppendLine();
             sb.AppendLine();
             sb.Append("원하시는 행동을 입력해주세요.");
@@ -54,27 +54,34 @@ namespace Sparta_TRPG_SoloProject.MainText
             sb.AppendLine();
             sb.AppendLine();
             sb.AppendLine("-----------------------------");
-
-            foreach (var stat in playerInfor.playerStats)
+            if (playerInfor.playerStats != null)
             {
-                if (stat.Key == PlayerStats.gold)
+                foreach (var stat in playerInfor.playerStats)
                 {
-                    sb.AppendLine($"\n[{stat.Key}]: {stat.Value}G");
-                    continue;
-                }
-                else if (stat.Key == PlayerStats.Lv)
-                {
-                    sb.AppendLine($"{stat.Key}. {stat.Value}");
-                }
-                else if (statDisPlay.TryGetValue(stat.Key, out int statValue) && statValue != 0)
-                {
-                    sb.AppendLine($"{stat.Key}: {stat.Value} (+{statValue})");
-                }
-                else
-                {
-                    sb.AppendLine($"[{stat.Key}]: {stat.Value}");
+                    if (stat.Key == PlayerStats.gold)
+                    {
+                        sb.AppendLine($"\n[{stat.Key}]: {stat.Value}G");
+                        continue;
+                    }
+                    else if (stat.Key == PlayerStats.Lv)
+                    {
+                        sb.AppendLine($"{stat.Key}. {stat.Value}");
+                    }
+                    else if (statDisPlay.TryGetValue(stat.Key, out int statValue) && statValue != 0)
+                    {
+                        sb.AppendLine($"{stat.Key}: {stat.Value} (+{statValue})");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"[{stat.Key}]: {stat.Value}");
+                    }
                 }
             }
+            else
+            {
+                Console.WriteLine("stats이 할당되지 않았습니다.");
+            }
+            
             sb.AppendLine();
             sb.AppendLine();
             sb.AppendLine("-----------------------------");
@@ -222,6 +229,19 @@ namespace Sparta_TRPG_SoloProject.MainText
 
             sb.Append(">> ");
             Console.Write(sb.ToString());
+        }
+
+        public void DungeonEntry()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[던전에 입장하였습니다.]");
+            sb.AppendLine("[다양한 모험을 통해 성장해 나가세요!]");
+            sb.AppendLine("\n0. 나가기");
+            sb.AppendLine("---------------------------------------------");
+            sb.AppendLine("\n원하시는 행동을 입력해주세요.");
+
+            sb.Append(">>");
+            Console.WriteLine(sb.ToString());
         }
 
         public void HealingTextPrint()

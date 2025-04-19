@@ -11,7 +11,7 @@ namespace Sparta_TRPG_SoloProject.Enums
         Weapon,
         Armor,
     }
-    
+
     public enum ItemStatType
     {
         damage,

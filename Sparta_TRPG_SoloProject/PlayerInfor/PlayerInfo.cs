@@ -18,7 +18,7 @@ namespace Sparta_TRPG_SoloProject.PlayerInfor
             {
                 { PlayerStats.Lv,1 },
                 { PlayerStats.name,"SprtaMan" },
-                { PlayerStats.hp,60 },
+                { PlayerStats.hp,100 },
                 { PlayerStats.damage,10 },
                 { PlayerStats.def,5 },
                 { PlayerStats.gold,1500 }
